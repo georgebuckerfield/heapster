@@ -21,6 +21,7 @@ import (
 	"github.com/golang/glog"
 	"k8s.io/heapster/common/flags"
 	"k8s.io/heapster/metrics/core"
+	"k8s.io/heapster/metrics/sinks/cloudwatch"
 	"k8s.io/heapster/metrics/sinks/elasticsearch"
 	"k8s.io/heapster/metrics/sinks/gcm"
 	"k8s.io/heapster/metrics/sinks/graphite"
@@ -41,6 +42,8 @@ type SinkFactory struct {
 
 func (this *SinkFactory) Build(uri flags.Uri) (core.DataSink, error) {
 	switch uri.Key {
+	case "cloudwatch":
+		return cloudwatch.CreateCloudwatchSink(&uri.Val)
 	case "elasticsearch":
 		return elasticsearch.NewElasticSearchSink(&uri.Val)
 	case "gcm":
